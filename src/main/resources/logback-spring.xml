@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProperty scope="context" name="applicationName" source="spring.application.name"
+                    defaultValue="default-application-name"/>
+
+    <property name="LOGS_ROOT_PATH" value="./logs"/>
+    <property name="LOG_PATTERN_CONSOLE"
+              value="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %highlight(%-5level) %X{processId} [%X{requestId}] --- [%15.15t] %-40.40logger{39}:%L : %m%n"/>
+    <property name="LOG_PATTERN_FILE"
+              value="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-5level %X{processId} [%X{requestId}] --- [%15.15t] %-40.40logger{39}:%L : %m%n"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN_CONSOLE}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS_ROOT_PATH}/${applicationName}.log</file>
+        <encoder>
+            <pattern>${LOG_PATTERN_FILE}</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_ROOT_PATH}/archived/${applicationName}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <logger name="com.bookfellow.bookfellowbackendspring" level="INFO" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <springProfile name="prod">
+        <root level="WARN"/>
+        <logger name="com.bookfellow.bookfellowbackendspring" level="WARN" additivity="false"/>
+    </springProfile>
+
+    <springProfile name="dev">
+        <root level="INFO"/>
+        <logger name="com.bookfellow.bookfellowbackendspring" level="DEBUG" additivity="false"/>
+    </springProfile>
+
+</configuration>

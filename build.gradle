@@ -1,0 +1,105 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+//    id 'checkstyle'
+}
+
+group = 'com.bookfellow'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    liquibaseVersion = '4.24.0'
+    jsonwebtokenVersion = '0.11.5'
+    apacheCommonsVersion = '3.14.0'
+    springdocVersion = '2.3.0'
+    testcontainersVersion = '1.19.1'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation "org.liquibase:liquibase-core:$liquibaseVersion"
+    implementation "org.apache.commons:commons-lang3:$apacheCommonsVersion"
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocVersion"
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    implementation "io.jsonwebtoken:jjwt-api:$jsonwebtokenVersion"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:$jsonwebtokenVersion"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:$jsonwebtokenVersion"
+
+    runtimeOnly "org.postgresql:postgresql"
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
+    testImplementation "org.testcontainers:postgresql:$testcontainersVersion"
+}
+
+//checkstyle {
+//    toolVersion = '10.12.4'
+//    config = resources.text.fromUri('file:config/checkstyle/checkstyle.xml')
+//    showViolations = true
+//    ignoreFailures = false
+//    maxWarnings = 0
+//}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    integrationTest {
+        java.srcDir file('src/integration-test/java')
+        resources.srcDir file('src/integration-test/resources')
+        compileClasspath += main.output + sourceSets.test.output
+        runtimeClasspath += main.output + sourceSets.test.output
+    }
+}
+
+configurations {
+    integrationTestImplementation.extendsFrom testImplementation
+    integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+tasks.register('integrationTest', Test) {
+    description = 'Runs the integration tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    useJUnitPlatform()
+}
+
+test {
+    useJUnitPlatform()
+    exclude '**/integration-test/**'
+}
+
+build {
+    dependsOn test
+}
+
+javadoc {
+    layout.buildDirectory.dir("docs/javadoc")
+    source = sourceSets.main.allJava
+}
