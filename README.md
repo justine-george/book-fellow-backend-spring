@@ -42,6 +42,11 @@ JWT_SECRET=<jwt_secret_key>
     ./gradlew build
     ./gradlew bootRun
     ```
+   
+3. [Optional] Prune the database:
+    ```shell
+    docker compose down -v
+    ```
 
 The application setup includes an initial admin user with credentials:
 
