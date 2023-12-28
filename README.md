@@ -1,4 +1,4 @@
-# Book Fellow App Backend using Spring Boot
+# Book Fellow App
 
 A Spring Boot backend for a social media platform for book lovers to share their favorite books and connect with other readers.
 
