@@ -26,8 +26,9 @@ ext {
     liquibaseVersion = '4.24.0'
     jsonwebtokenVersion = '0.11.5'
     apacheCommonsVersion = '3.14.0'
-    springdocVersion = '2.3.0'
-    testcontainersVersion = '1.19.1'
+    springdocVersion = '2.6.0'
+    testcontainersVersion = '1.19.8'
+    mapstructVersion = '1.5.5.Final'
 }
 
 dependencies {
@@ -38,6 +39,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocVersion"
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    implementation "org.mapstruct:mapstruct:$mapstructVersion"
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
 
     implementation "io.jsonwebtoken:jjwt-api:$jsonwebtokenVersion"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:$jsonwebtokenVersion"
