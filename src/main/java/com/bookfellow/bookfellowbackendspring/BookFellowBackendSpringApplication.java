@@ -13,8 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 public class BookFellowBackendSpringApplication implements CommandLineRunner {
 
+  private final UserRepository userRepository;
+
   @Autowired
-  private UserRepository userRepository;
+  public BookFellowBackendSpringApplication(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
   public static void main(String[] args) {
     SpringApplication.run(BookFellowBackendSpringApplication.class, args);
