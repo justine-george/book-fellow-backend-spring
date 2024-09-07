@@ -6,6 +6,11 @@ A backend for a book-focused social media platform. Users can share reviews, cre
 
 Deployed frontend: https://book-fellow-frontend-react.pages.dev/
 
+Demo account:
+
+- Email: user@bookfellow.com
+- Password: readingisfun
+
 ## Built With
 
 - [Spring Boot 3](https://spring.io/projects/spring-boot)
